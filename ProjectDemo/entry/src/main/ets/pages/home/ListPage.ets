@@ -54,62 +54,71 @@ struct GoodsList {
     Log.info(`goodsListData.count === ${this.goodsListData.totalCount()}`);
   }
 
+  /// 列表分组的头部组件
+  @Builder itemHead(text: string) {
+    Row(){
+      Text(text).fontSize(12).margin({left: 15, right: 15})
+    }.height(15)
+  }
+
   build() {
     Row() {
       List({ space: 16 }) {
-        LazyForEach(this.goodsListData, (item: GoodsListItemType) => {
-          ListItem() {
-            Row() {
-              Column() {
-                Image(item.goodsImg)
-                  .width(100)
-                  .height(100)
-              }
-              .justifyContent(FlexAlign.Center)
-              .height('100%')
-              .margin({ right: 10 })
-
-              Column() {
+        ListItemGroup({header: this.itemHead('A')}) {
+          LazyForEach(this.goodsListData, (item: GoodsListItemType) => {
+            ListItem() {
+              Row() {
                 Column() {
-                  Text(item.goodsName).fontSize(16).fontWeight(FontWeight.Medium).margin({ bottom: 10 })
-                  Text(item.advertising_language).fontSize(12).fontColor(Color.Gray)
+                  Image(item.goodsImg)
+                    .width(100)
+                    .height(100)
                 }
-                .alignItems(HorizontalAlign.Start)
+                .justifyContent(FlexAlign.Center)
+                .height('100%')
+                .margin({ right: 10 })
 
-                Row() {
-                  Text(item.evaluate).fontSize(12)
-                  Text(item.price).fontSize(16).fontColor(Color.Red)
+                Column() {
+                  Column() {
+                    Text(item.goodsName).fontSize(16).fontWeight(FontWeight.Medium).margin({ bottom: 10 })
+                    Text(item.advertising_language).fontSize(12).fontColor(Color.Gray)
+                  }
+                  .alignItems(HorizontalAlign.Start)
+
+                  Row() {
+                    Text(item.evaluate).fontSize(12)
+                    Text(item.price).fontSize(16).fontColor(Color.Red)
+                  }
+                  .justifyContent(FlexAlign.SpaceBetween)
+                  .width('100%')
                 }
                 .justifyContent(FlexAlign.SpaceBetween)
-                .width('100%')
+                .alignItems(HorizontalAlign.Start)
+                .layoutWeight(1) // 让其占满剩余空间
+                .height('100%')
+
               }
-              .justifyContent(FlexAlign.SpaceBetween)
-              .alignItems(HorizontalAlign.Start)
-              .layoutWeight(1) // 让其占满剩余空间
-              .height('100%')
+              .width('100%')
+              .height(100)
 
             }
-            .width('100%')
-            .height(100)
+            .backgroundColor(Color.White)
+            .margin({left: 15, right: 15})
+            .padding(10)
+            .borderRadius(5)
+            .onTouch((event: TouchEvent) => {
+              switch (event.type) {
+                case TouchType.Down:
+                  break;
 
-          }
-          .backgroundColor(Color.White)
-          .margin({left: 15, right: 15})
-          .padding(10)
-          .borderRadius(5)
-          .onTouch((event: TouchEvent) => {
-            switch (event.type) {
-              case TouchType.Down:
-                break;
+                case TouchType.Up:
+                  break;
 
-              case TouchType.Up:
-                break;
-
-              case TouchType.Move:
-                break;
-            }
+                case TouchType.Move:
+                  break;
+              }
+            })
           })
-        })
+        }
       }
       .width('100%')
       .height('100%')
